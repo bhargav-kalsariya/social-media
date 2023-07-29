@@ -2,8 +2,11 @@ const User = require("../models/User");
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const { error, success } = require("../utils/responseWrapper");
 
 dotenv.config('./.env');
+
+// controllers //
 
 const signupController = async (req, res) => {
 
@@ -12,13 +15,14 @@ const signupController = async (req, res) => {
         let { email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(400).send('All fields are required');
+            return res.send(error(400, 'All fields are required'));
         }
 
         let oldUser = await User.findOne({ email });
 
         if (oldUser) {
-            return res.status(409).send('User is already Registered');
+            return res.send(error(409, 'User is already Registered'));
+
         }
 
         const hasedPassword = await bcrypt.hash(password, 10);
@@ -30,9 +34,9 @@ const signupController = async (req, res) => {
 
         });
 
-        return res.status(201).json({
+        return res.send(success(201, {
             user
-        });
+        }));
 
     } catch (error) {
 
@@ -49,26 +53,33 @@ const loginController = async (req, res) => {
         let { email, password } = req.body;
 
         if (!email || !password) {
-            return res.status(400).send('All fields are required');
+            return res.send(error(400, 'All fields are required'));
         }
 
         let user = await User.findOne({ email });
 
         if (!user) {
-            return res.status(404).send('User not found');
+            return res.send(error(404, 'User not found'));
         }
 
         const matched = await bcrypt.compare(password, user.password);
 
         if (!matched) {
-            return res.status(404).send('Incorrect password');
+            return res.send(error(404, 'Incorrect password'));
         }
 
         const accessToken = generateAccessToken({ _id: user._id });
 
         const refreshToken = generateRefreshToken({ _id: user._id });
 
-        return res.json({ accessToken: accessToken, refreshToken: refreshToken });
+        res.cookie('jwt', refreshToken, {
+            httpOnly: true,
+            secure: true,
+        })
+
+        return res.send(success(200, {
+            accessToken: accessToken
+        }));
 
     } catch (error) {
 
@@ -80,13 +91,17 @@ const loginController = async (req, res) => {
 
 const refreshAccessTokenController = (req, res) => {
 
-    const { refreshToken } = req.body;
+    const cookies = req.cookies;
 
-    if (!refreshToken) {
+    if (!cookies.jwt) {
 
-        return res.status(401).send('Refresh token is required');
+        return res.send(error(401, 'Refresh token in cookie required'));
 
     }
+
+    const refreshToken = cookies.jwt;
+
+    console.log("refreshToken" + refreshToken);
 
     try {
 
@@ -96,15 +111,16 @@ const refreshAccessTokenController = (req, res) => {
         )
 
         const _id = decoded._id;
-
         const accessToken = generateAccessToken({ _id });
 
-        return res.status(201).json({ accessToken: accessToken });
+        return res.send(success(201, {
+            accessToken: accessToken
+        }));
 
     } catch (error) {
 
         console.log(error);
-        return res.status(401).send('Invalid Access Token');
+        return res.send(error(401, 'Invalid Refresh Token'));
 
     }
 
@@ -119,7 +135,6 @@ const generateAccessToken = (data) => {
         let token = jwt.sign(data, process.env.ACCESS_TOKEN_PRIVATE_KEY, {
             expiresIn: '15m'
         });
-        console.log(token);
         return token;
 
     } catch (error) {
@@ -137,7 +152,6 @@ const generateRefreshToken = (data) => {
         let token = jwt.sign(data, process.env.REFRESH_TOKEN_PRIVATE_KEY, {
             expiresIn: '1y'
         });
-        console.log(token);
         return token;
 
     } catch (error) {
@@ -147,6 +161,8 @@ const generateRefreshToken = (data) => {
     }
 
 };
+
+// exports //
 
 module.exports = {
     signupController,

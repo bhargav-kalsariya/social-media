@@ -1,7 +1,9 @@
+const { success } = require("../utils/responseWrapper");
+
 const getAllPostsController = (req, res) => {
 
     console.log(req._id);
-    res.status(200).send('These are all the posts');
+    res.send(success(200, 'These are all the posts'));
 
 };
 

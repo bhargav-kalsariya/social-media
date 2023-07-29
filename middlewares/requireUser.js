@@ -1,5 +1,6 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
+const { error } = require('../utils/responseWrapper');
 
 dotenv.config('./.env');
 
@@ -13,7 +14,7 @@ module.exports = async (req, res, next) => {
             !req.headers.authorization.startsWith('Bearer')
         ) {
 
-            return res.status(401).send('Authorization headers is Required');
+            return res.send(error(401, 'Authorization headers is Required'));
 
         };
 
@@ -28,17 +29,17 @@ module.exports = async (req, res, next) => {
             req._id = decoded._id;
             next();
 
-        } catch (error) {
+        } catch (e) {
 
-            console.log(error);
-            return res.status(401).send('Invalid Access Token');
+            console.log(e);
+            return res.send(error(401, 'Invalid Access Token'));
 
         }
 
 
-    } catch (error) {
+    } catch (e) {
 
-        console.log(error);
+        console.log(e);
 
     }
 
