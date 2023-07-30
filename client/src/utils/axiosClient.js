@@ -43,11 +43,12 @@ axiosClient.interceptors.response.use(
         if (statusCode === 401) {
             try {
 
-                const response = await axiosClient.get('/auth/refresh');
-                console.log(response)
-                if (response.status === 'ok') {
-                    setItem(KEY_ACCESS_TOKEN, response.result.accessToken);
-                    originalRequest.headers['Authorization'] = `Bearer ${response.result.accessToken}`;
+                const response = await axios.create({
+                    withCredentials: true,
+                }).get(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/refresh`);
+                if (response.data.status === 'ok') {
+                    setItem(KEY_ACCESS_TOKEN, response.data.result.accessToken);
+                    originalRequest.headers['Authorization'] = `Bearer ${response.data.result.accessToken}`;
 
                     return axios(originalRequest);
                 }
