@@ -101,8 +101,6 @@ const refreshAccessTokenController = (req, res) => {
 
     const refreshToken = cookies.jwt;
 
-    console.log("refreshToken" + refreshToken);
-
     try {
 
         const decoded = jwt.verify(
@@ -133,7 +131,7 @@ const generateAccessToken = (data) => {
     try {
 
         let token = jwt.sign(data, process.env.ACCESS_TOKEN_PRIVATE_KEY, {
-            expiresIn: '15m'
+            expiresIn: '15s'
         });
         return token;
 
