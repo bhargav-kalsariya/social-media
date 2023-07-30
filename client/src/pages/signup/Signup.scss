@@ -1,11 +1,11 @@
-.login {
+.signup {
 
     height: 100vh;
     display: flex;
     justify-content: center;
     align-items: center;
 
-    .login-box {
+    .signup-box {
         min-width: 400px;
         padding: 40px;
         border: 1px solid black;
@@ -48,4 +48,5 @@
     .subheading {
         margin-top: 16px;
     }
+
 }

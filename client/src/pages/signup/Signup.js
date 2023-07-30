@@ -1,13 +1,16 @@
 import React from 'react'
-import './Login.scss'
 import { Link } from 'react-router-dom'
+import './Signup.scss'
 
-function Login() {
+function Signup() {
     return (
-        <div className='login'>
-            <div className='login-box'>
+        <div className='signup'>
+            <div className='signup-box'>
                 <h2 className='heading'>Login</h2>
                 <form>
+                    <label htmlFor="name">Name</label>
+                    <input type="text" className="name" id="name" />
+
                     <label htmlFor="email">Email</label>
                     <input type="email" className="email" id="email" />
 
@@ -16,12 +19,12 @@ function Login() {
 
                     <input type="submit" className="submit" id="" />
                 </form>
-                <p className='subheading'>Do not have account?
-                    <Link to='/signup'>Sign up</Link>
+                <p className='subheading'>Already have an account?
+                    <Link to='/login'>Login</Link>
                 </p>
             </div>
         </div>
     )
 }
 
-export default Login
+export default Signup
