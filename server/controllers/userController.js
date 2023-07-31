@@ -72,7 +72,55 @@ const getPostsOfFollowings = async (req, res) => {
 
 };
 
+const getMinePostsController = async (req, res) => {
+
+    try {
+
+        const currentUserId = req._id;
+
+        const posts = await Post.find({
+            owner: currentUserId
+        }).populate('likes');
+
+        return res.send(success(200, { posts }));
+
+    } catch (e) {
+
+        return res.send(error(500, e.message));
+
+    }
+
+};
+
+const getUserPostsController = async (req, res) => {
+
+    try {
+
+        const { userId } = req.body;
+
+        if (!userId) {
+
+            return res.send(error(404, "User not found"));
+
+        };
+
+        const posts = await Post.find({
+            owner: userId
+        }).populate('likes');
+
+        return res.send(success(200, { posts }));
+
+    } catch (e) {
+
+        return res.send(error(500, e.message));
+
+    }
+
+};
+
 module.exports = {
     followAndUnfollowController,
-    getPostsOfFollowings
+    getPostsOfFollowings,
+    getMinePostsController,
+    getUserPostsController
 }
