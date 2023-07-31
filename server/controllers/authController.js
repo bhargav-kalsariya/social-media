@@ -12,9 +12,9 @@ const signupController = async (req, res) => {
 
     try {
 
-        let { email, password } = req.body;
+        let { email, password, name } = req.body;
 
-        if (!email || !password) {
+        if (!email || !password || !name) {
             return res.send(error(400, 'All fields are required'));
         }
 
@@ -27,16 +27,15 @@ const signupController = async (req, res) => {
 
         const hasedPassword = await bcrypt.hash(password, 10);
 
-        const user = await User.create({
+        await User.create({
 
+            name,
             email,
             password: hasedPassword
 
         });
 
-        return res.send(success(201, {
-            user
-        }));
+        return res.send(success(201, 'User created successfully'));
 
     } catch (error) {
 
@@ -56,7 +55,7 @@ const loginController = async (req, res) => {
             return res.send(error(400, 'All fields are required'));
         }
 
-        let user = await User.findOne({ email });
+        let user = await User.findOne({ email }).select('+password');
 
         if (!user) {
             return res.send(error(404, 'User not found'));
@@ -131,7 +130,7 @@ const generateAccessToken = (data) => {
     try {
 
         let token = jwt.sign(data, process.env.ACCESS_TOKEN_PRIVATE_KEY, {
-            expiresIn: '15s'
+            expiresIn: '1d'
         });
         return token;
 
