@@ -1,3 +1,4 @@
+const Post = require("../models/Post");
 const User = require("../models/User");
 const { error, success } = require("../utils/responseWrapper");
 
@@ -56,6 +57,22 @@ const followAndUnfollowController = async (req, res) => {
 
 };
 
+const getPostsOfFollowings = async (req, res) => {
+
+    const currentUserId = req._id;
+    const currentUser = await User.findById(currentUserId);
+
+    const posts = await Post.find({
+        "owner": {
+            "$in": currentUser.followings
+        }
+    });
+
+    return res.send(success(200, { posts }));
+
+};
+
 module.exports = {
-    followAndUnfollowController
+    followAndUnfollowController,
+    getPostsOfFollowings
 }
