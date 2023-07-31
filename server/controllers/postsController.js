@@ -2,11 +2,6 @@ const Post = require("../models/Post");
 const User = require("../models/User");
 const { success, error } = require("../utils/responseWrapper");
 
-const getAllPostsController = (req, res) => {
-
-    res.send(success(200, 'These are all the posts'));
-
-};
 
 const createPostController = async (req, res) => {
 
@@ -75,8 +70,75 @@ const likeAndUnlikeController = async (req, res) => {
 
 };
 
+const updatePostCOntroller = async (req, res) => {
+
+    try {
+
+        const { postId, caption } = req.body;
+        const currentUserId = req._id;
+
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.send(error(404, "Post Not Found"));
+        }
+
+        if (post.owner.toString() !== currentUserId) {
+            return res.send(error(403, 'only Owner can update post'));
+        }
+
+        if (caption) {
+            post.caption = caption;
+
+            await post.save();
+            return res.send(success(200, post))
+        }
+
+    } catch (e) {
+
+        return res.send(error(500, e.message));
+
+    }
+
+};
+
+const deletePostController = async (req, res) => {
+
+    try {
+
+        const { postId } = req.body;
+        const currentUserId = req._id;
+
+        const post = await Post.findById(postId);
+        const currentUser = await User.findById(currentUserId);
+
+        if (!post) {
+            return res.send(error(404, "Post Not Found"));
+        }
+
+        if (post.owner.toString() !== currentUserId) {
+            return res.send(error(403, 'only Owner can delete post'));
+        }
+
+        const index = currentUser.posts.indexOf(postId);
+        currentUser.posts.splice(index, 1);
+
+        await currentUser.save();
+        await Post.findByIdAndDelete(postId);
+
+        return res.send(success(200, "post deleted successfully"));
+
+    } catch (e) {
+
+        return res.send(error(500, e.message));
+
+    }
+
+};
+
 module.exports = {
-    getAllPostsController,
     createPostController,
-    likeAndUnlikeController
+    likeAndUnlikeController,
+    updatePostCOntroller,
+    deletePostController
 }
