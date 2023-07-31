@@ -3,6 +3,7 @@ const app = express();
 const dotenv = require('dotenv');
 const dbconnect = require('./dbconnect');
 const authRouter = require('./routers/authRouter');
+const userRouter = require('./routers/userRouter');
 const postsRouter = require('./routers/postsRouter');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
@@ -20,6 +21,8 @@ app.use(morgan('common'));
 app.use(cookieParser());
 
 // Routers //
+
+app.use('/user', userRouter);
 app.use('/posts', postsRouter);
 app.use('/auth', authRouter);
 
