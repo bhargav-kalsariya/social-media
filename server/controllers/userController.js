@@ -118,9 +118,80 @@ const getUserPostsController = async (req, res) => {
 
 };
 
+const deleteMyProfileController = async (req, res) => {
+
+    try {
+
+        const currentUserId = req._id;
+        const currentUser = await User.findById(currentUserId);
+
+        // deletePostsOfCurrentUser 
+
+        await Post.deleteMany({
+            owner: currentUserId
+        });
+
+        // removing myself from my followers's following list
+
+        currentUser.followers.forEach(async followerId => {
+
+            const follower = await User.findById(followerId);
+            const index = follower.followings.indexOf(currentUserId);
+            follower.followings.splice(index, 1);
+
+            await follower.save();
+
+        });
+
+        // removing myself from my following's follower list
+
+        currentUser.followings.forEach(async followingId => {
+
+            const following = await User.findById(followingId);
+            const index = following.followers.indexOf(currentUserId);
+            following.followers.splice(index, 1);
+
+            await following.save();
+
+        });
+
+
+        // remove my all likes from all posts
+
+        const posts = await Post.find();
+
+        posts.forEach(async post => {
+
+            const index = post.likes.indexOf(currentUserId);
+            post.likes.splice(index, 1);
+
+            await post.save();
+
+        });
+
+        // delete my profile
+
+        await User.findByIdAndDelete(currentUserId);
+
+        res.clearCookie('jwt', {
+            httpOnly: true,
+            secure: true
+        })
+
+        return res.send(success(200, 'User deleted'));
+
+    } catch (e) {
+
+        return res.send(error(500, e.message));
+
+    }
+
+};
+
 module.exports = {
     followAndUnfollowController,
     getPostsOfFollowings,
     getMinePostsController,
-    getUserPostsController
+    getUserPostsController,
+    deleteMyProfileController
 }

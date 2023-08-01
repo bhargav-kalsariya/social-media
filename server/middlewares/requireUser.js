@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken');
 const dotenv = require('dotenv');
 const { error } = require('../utils/responseWrapper');
+const User = require('../models/User');
 
 dotenv.config('./.env');
 
@@ -27,6 +28,15 @@ module.exports = async (req, res, next) => {
                 process.env.ACCESS_TOKEN_PRIVATE_KEY
             );
             req._id = decoded._id;
+
+            const user = await User.findById(req._id);
+
+            if (!user) {
+
+                return res.send(error(404, "User not found"));
+
+            };
+
             next();
 
         } catch (e) {
