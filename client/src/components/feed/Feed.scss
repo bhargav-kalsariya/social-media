@@ -1,0 +1,25 @@
+.Feed {
+    .container {
+        max-width: 960px;
+        display: flex;
+        margin-inline: auto;
+        gap: 20px;
+
+        .left-side {
+            flex: 2;
+        }
+
+        .right-side {
+            flex: 1;
+            margin-top: 20px;
+        }
+
+        .suggestion {
+            margin-top: 40px;
+        }
+
+        .title {
+            margin-bottom: 12px;
+        }
+    }
+}
