@@ -12,7 +12,7 @@ function Post({ post }) {
                 <h4>bhargav kumar</h4>
             </div>
             <div className="content">
-                <img src={post ? post : bgimg} alt="bg image" />
+                <img src={bgimg} alt="nature" />
             </div>
             <div className="footer">
                 <div className="like">

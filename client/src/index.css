@@ -49,3 +49,42 @@ p {
 .hover-link:active {
   color: red;
 }
+
+.btn-primary {
+  background-color: var(--accent-color);
+  color: white;
+  border: 2px solid var(--accent-color);
+  font-weight: bold;
+  padding: 10px 40px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.btn-primary:hover {
+  background-color: #3072d5;
+
+}
+
+.btn-primary:active {
+  background-color: #172a45;
+}
+
+.btn-secondary {
+  border: 2px solid var(--accent-color);
+  color: var(--accent-color);
+  font-weight: bold;
+  font-weight: bold;
+  padding: 10px 40px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: all 0.5s;
+}
+
+.btn-secondary:hover {
+  background-color: #ffffff;
+}
+
+.btn-secondary:active {
+  background-color: #ccd3dd;
+}

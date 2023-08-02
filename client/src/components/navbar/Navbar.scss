@@ -10,4 +10,17 @@
         justify-content: space-between;
         margin-inline: auto;
     }
+
+    .right-side {
+        display: flex;
+        gap: 20px;
+        align-items: center;
+
+        .logout {
+            font-size: 1.8rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
 }
