@@ -4,7 +4,7 @@ const userSchema = mongoose.Schema({
 
     name: {
         type: String,
-        required: true
+        required: true,
     },
     email: {
         type: String,
@@ -19,7 +19,10 @@ const userSchema = mongoose.Schema({
     },
     avatar: {
         publicId: String,
-        url: String
+        url: String,
+    },
+    bio: {
+        type: String
     },
     followers: [{
         type: mongoose.Schema.Types.ObjectId,
@@ -33,6 +36,10 @@ const userSchema = mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'post'
     }]
+
+}, {
+
+    timestamps: true
 
 });
 

@@ -31,26 +31,32 @@ axiosClient.interceptors.response.use(
         const statusCode = data.statusCode;
         const error = data.error;
 
-        if (
-            statusCode === 401 &&
-            originalRequest.url === `${process.env.REACT_APP_SERVER_BASE_URL}/auth/refresh`
-        ) {
-            removeItem(KEY_ACCESS_TOKEN);
-            window.location.replace('/login', '_self');
-            return Promise.reject(error);
-        }
+        if (statusCode === 401 && !originalRequest.url_retry) {
 
-        if (statusCode === 401) {
+            originalRequest.url_retry = true;
+
             try {
 
                 const response = await axios.create({
+
                     withCredentials: true,
-                }).get(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/refresh`);
+
+                })
+                    .get(`${process.env.REACT_APP_SERVER_BASE_URL}/auth/refresh`);
+
                 if (response.data.status === 'ok') {
+
                     setItem(KEY_ACCESS_TOKEN, response.data.result.accessToken);
                     originalRequest.headers['Authorization'] = `Bearer ${response.data.result.accessToken}`;
 
                     return axios(originalRequest);
+
+                } else {
+
+                    removeItem(KEY_ACCESS_TOKEN);
+                    window.location.replace('/login', '_self');
+                    return Promise.reject(error);
+
                 }
 
             } catch (error) {

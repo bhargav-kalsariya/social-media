@@ -188,10 +188,43 @@ const deleteMyProfileController = async (req, res) => {
 
 };
 
+const getMyInfoController = async (req, res) => {
+
+    try {
+
+        const user = await User.findById(req._id);
+        return res.send(success(200, { user }));
+
+    } catch (e) {
+
+        return res.send(error(500, e.message));
+
+    }
+
+};
+
+const updateUserProfileController = async (req, res) => {
+
+    try {
+
+        const { name } = req.body;
+
+        const user = await User.findById(req._id);
+
+    } catch (e) {
+
+        return res.send(error(500, e.message));
+
+    }
+
+}
+
 module.exports = {
     followAndUnfollowController,
     getPostsOfFollowings,
     getMinePostsController,
     getUserPostsController,
-    deleteMyProfileController
+    deleteMyProfileController,
+    getMyInfoController,
+    updateUserProfileController
 }

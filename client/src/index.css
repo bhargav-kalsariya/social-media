@@ -79,6 +79,7 @@ p {
   border-radius: 5px;
   cursor: pointer;
   transition: all 0.5s;
+  background-color: #ffffff;
 }
 
 .btn-secondary:hover {
