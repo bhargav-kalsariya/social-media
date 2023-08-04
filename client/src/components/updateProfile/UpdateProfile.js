@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import './UpdateProfile.scss';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateMyProfile } from '../../redux/slices/appConfigSlice';
 
 function UpdateProfile() {
 
@@ -8,13 +9,14 @@ function UpdateProfile() {
 
     const [name, setName] = useState('');
     const [bio, setBio] = useState('');
-    const [UserImg, setUserImg] = useState('');
+    const [userImg, setUserImg] = useState('');
+    const dispatch = useDispatch();
 
     useEffect(() => {
 
         setName(myProfile?.name || '')
-        setBio(myProfile?.email || '')
-        setUserImg(myProfile?.avatar || '')
+        setBio(myProfile?.bio || '')
+        setUserImg(myProfile?.avatar.url || '')
 
     }, [myProfile])
 
@@ -31,22 +33,31 @@ function UpdateProfile() {
 
     }
 
+    function handleSubmit(e) {
+        e.preventDefault();
+        dispatch(updateMyProfile(
+            {
+                name, bio, userImg
+            }
+        ))
+    }
+
     return (
         <div className='UpdateProfile'>
             <div className="container">
                 <div className="left-side">
                     <div className="input-user-img">
                         <label htmlFor="userImg" className='lableImg'>
-                            <img src={UserImg} alt={name} />
+                            <img src={userImg} alt={name} />
                         </label>
                         <input className='inputImg' type="file" accept='image/*' id="userImg" onChange={handleImageChange} />
                     </div>
                 </div>
                 <div className="right-side">
-                    <form action="">
+                    <form onSubmit={handleSubmit}>
                         <input value={name} type="text" placeholder='Your Name' onChange={(e) => setName(e.target.value)} />
                         <input value={bio} type="text" placeholder='Your Bio' onChange={(e) => setBio(e.target.value)} />
-                        <input type="submit" className='btn-primary' />
+                        <input type="submit" className='btn-primary' onSubmit={handleSubmit} />
                     </form>
                     <input type="submit" className='btn-primary delete-account' value='Delete Account' />
                 </div>

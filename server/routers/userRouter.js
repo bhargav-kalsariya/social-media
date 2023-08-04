@@ -8,6 +8,6 @@ router.get('/getMinePosts', requireUser, userController.getMinePostsController);
 router.get('/getUserPosts', requireUser, userController.getUserPostsController);
 router.delete('/', requireUser, userController.deleteMyProfileController);
 router.get('/getMyInfo', requireUser, userController.getMyInfoController);
-router.get('/updateProfile', requireUser, userController.updateUserProfileController);
+router.put('/', requireUser, userController.updateUserProfileController);
 
 module.exports = router;

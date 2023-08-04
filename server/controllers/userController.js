@@ -1,6 +1,7 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
 const { error, success } = require("../utils/responseWrapper");
+const cloudinary = require('cloudinary').v2;
 
 const followAndUnfollowController = async (req, res) => {
 
@@ -207,9 +208,28 @@ const updateUserProfileController = async (req, res) => {
 
     try {
 
-        const { name } = req.body;
+        const { name, bio, userImg } = req.body;
 
         const user = await User.findById(req._id);
+
+        if (name) {
+            user.name = name;
+        }
+        if (bio) {
+            user.bio = bio;
+        }
+        if (userImg) {
+            const cloudImg = await cloudinary.uploader.upload(userImg, {
+                folder: 'userProfile'
+            });
+            user.avatar = {
+                url: cloudImg.secure_url,
+                publicId: cloudImg.public_id
+            }
+        }
+
+        await user.save();
+        return res.send(success(200, { user }));
 
     } catch (e) {
 
