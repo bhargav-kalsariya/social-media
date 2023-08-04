@@ -1,0 +1,60 @@
+.createPost {
+    display: flex;
+    border: 1px solid var(--border-color);
+    margin-top: 20px;
+    border-radius: 5px;
+    gap: 10px;
+    padding: 20px;
+
+    .right-part {
+
+        flex-grow: 1;
+
+        .captionInput {
+            width: 100%;
+            padding: 8px 16px;
+            border: 1px solid var(--border-color);
+            border-radius: 5px;
+        }
+
+        .img-container {
+            margin-top: 20px;
+            aspect-ratio: 16 / 9;
+
+            .post-img {
+                width: 100%;
+                height: 100%;
+                border-radius: 5px;
+                object-fit: cover;
+            }
+        }
+    }
+
+    .bottom-part {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 20px;
+
+        .lableImg {
+            display: inline-block;
+            background-color: var(--accent-color);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            border-radius: 50%;
+        }
+
+        .post-btn {
+            padding: 8px 30px;
+        }
+
+        .inputImg {
+            display: none;
+        }
+    }
+}

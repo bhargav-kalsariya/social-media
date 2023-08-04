@@ -3,6 +3,7 @@ import Post from '../post/Post'
 import './Profile.scss'
 import userImg from '../../assets/user.png'
 import { useNavigate } from 'react-router-dom'
+import CreatePost from '../createPost/CreatePost'
 
 function Profile() {
     const navigate = useNavigate();
@@ -11,6 +12,7 @@ function Profile() {
         <div className='Profile'>
             <div className="container">
                 <div className="left-side">
+                    <CreatePost />
                     <Post />
                     <Post />
                     <Post />
