@@ -11,7 +11,7 @@ const mapPostOutput = (post, userId) => {
             avatar: post.owner.avatar
         },
         likeCount: post.likes.length,
-        isLiekd: post.likes.includes(userId)
+        isLiked: post.likes.includes(userId)
 
     }
 };

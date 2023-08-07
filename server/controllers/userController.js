@@ -55,7 +55,7 @@ const followAndUnfollowController = async (req, res) => {
 
         return res.send(error(500, e.message));
 
-    }
+    };
 
 };
 
@@ -90,7 +90,7 @@ const getMinePostsController = async (req, res) => {
 
         return res.send(error(500, e.message));
 
-    }
+    };
 
 };
 
@@ -116,7 +116,7 @@ const getUserPostsController = async (req, res) => {
 
         return res.send(error(500, e.message));
 
-    }
+    };
 
 };
 
@@ -186,7 +186,7 @@ const deleteMyProfileController = async (req, res) => {
 
         return res.send(error(500, e.message));
 
-    }
+    };
 
 };
 
@@ -201,7 +201,7 @@ const getMyInfoController = async (req, res) => {
 
         return res.send(error(500, e.message));
 
-    }
+    };
 
 };
 
@@ -214,12 +214,19 @@ const updateUserProfileController = async (req, res) => {
         const user = await User.findById(req._id);
 
         if (name) {
+
             user.name = name;
-        }
+
+        };
+
         if (bio) {
+
             user.bio = bio;
-        }
+
+        };
+
         if (userImg) {
+
             const cloudImg = await cloudinary.uploader.upload(userImg, {
                 folder: 'userProfile'
             });
@@ -227,7 +234,8 @@ const updateUserProfileController = async (req, res) => {
                 url: cloudImg.secure_url,
                 publicId: cloudImg.public_id
             }
-        }
+
+        };
 
         await user.save();
         return res.send(success(200, { user }));
@@ -236,15 +244,15 @@ const updateUserProfileController = async (req, res) => {
 
         return res.send(error(500, e.message));
 
-    }
+    };
 
-}
+};
 
 const getUserProfileController = async (req, res) => {
 
     try {
 
-        const userId = req.body.userId
+        const userId = req.body.userId;
         const user = await User.findById(userId).populate({
             path: 'posts',
             populate: {
@@ -261,7 +269,7 @@ const getUserProfileController = async (req, res) => {
 
         return res.send(error(500, e.message));
 
-    }
+    };
 
 };
 
