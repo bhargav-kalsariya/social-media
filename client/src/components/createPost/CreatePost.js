@@ -3,13 +3,15 @@ import './CreatePost.scss';
 import Avatar from '../avatar/Avatar';
 import { BsCardImage } from 'react-icons/bs'
 import { axiosClient } from '../../utils/axiosClient'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setLoading } from '../../redux/slices/appConfigSlice';
+import { getUserProfile } from '../../redux/slices/postsSlice';
 
 function CreatePost() {
 
     const [postImg, setPostImg] = useState('');
     const [caption, setCaption] = useState('');
+    const myProfile = useSelector(state => state.appConfigReducer.myProfile);
     const disPatch = useDispatch();
 
     function handleImageChange(e) {
@@ -32,7 +34,10 @@ function CreatePost() {
                 caption,
                 postImg
             })
-            console.log(response);
+            console.log('create post', response);
+            disPatch(getUserProfile({
+                userId: myProfile?._id
+            }))
 
         } catch (error) {
 

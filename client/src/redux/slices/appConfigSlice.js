@@ -6,8 +6,7 @@ export const getMyInfo = createAsyncThunk('user/getMyInfo', async (body, thunkAP
     try {
 
         thunkAPI.dispatch(setLoading(true));
-        const response = await axiosClient.get('/user/getMyInfo')
-        console.log(response);
+        const response = await axiosClient.get('/user/getMyInfo');
         return response.result
 
     } catch (error) {

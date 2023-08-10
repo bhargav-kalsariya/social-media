@@ -9,6 +9,7 @@ import UpdateProfile from "./components/updateProfile/UpdateProfile";
 import { useSelector } from "react-redux";
 import LoadingBar from 'react-top-loading-bar'
 import { useEffect, useRef } from "react";
+import OnlyIfNotLogin from "./components/OnlyIfNotLogin";
 
 function App() {
 
@@ -40,8 +41,12 @@ function App() {
           </Route>
         </Route>
 
-        <Route path="/login" element={<Login />}></Route>
-        <Route path="/signup" element={<Signup />}></Route>
+        <Route element={<OnlyIfNotLogin />}>
+
+          <Route path="/login" element={<Login />}></Route>
+          <Route path="/signup" element={<Signup />}></Route>
+
+        </Route>
 
       </Routes>
     </div>

@@ -29,7 +29,7 @@ axiosClient.interceptors.response.use(
 
         const originalRequest = response.config;
         const statusCode = data.statusCode;
-        const error = data.error;
+        const error = data.message;
 
         if (statusCode === 401 && !originalRequest.url_retry) {
 

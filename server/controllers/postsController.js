@@ -12,27 +12,33 @@ const createPostController = async (req, res) => {
         const owner = req._id;
         const user = await User.findById(req._id);
 
-        if (!caption) {
-            return res.send(success(400, 'Caption is required'));
+        if (!caption || !postImg) {
+
+            return res.send(success(400, 'Caption and postImg are required'));
+
         }
 
         const cloudImg = await cloudinary.uploader.upload(postImg, {
+
             folder: 'postImg'
+
         })
 
         const post = await Post.create({
+
             owner,
             caption,
             image: {
                 publicId: cloudImg.public_id,
                 url: cloudImg.secure_url
             }
+
         });
 
         user.posts.push(post._id);
         await user.save();
 
-        return res.send(success(201, post));
+        return res.send(success(201, { post }));
 
     } catch (e) {
 
@@ -52,7 +58,9 @@ const likeAndUnlikeController = async (req, res) => {
         const post = await Post.findById(postId);
 
         if (!post) {
+
             return res.send(success(404, 'Post Not Found'));
+
         }
 
         if (post.likes.includes(currentUserId)) {
@@ -60,16 +68,14 @@ const likeAndUnlikeController = async (req, res) => {
             const index = post.likes.indexOf(currentUserId);
             post.likes.splice(index, 1);
 
-            await post.save();
-            return res.send(success(200, 'Post unliked'));
-
         } else {
 
             post.likes.push(currentUserId);
-            await post.save();
-            return res.send(success(200, 'Post liked'));
 
         }
+
+        await post.save();
+        return res.send(success(200, { post }));
 
     } catch (e) {
 
@@ -89,18 +95,24 @@ const updatePostCOntroller = async (req, res) => {
         const post = await Post.findById(postId);
 
         if (!post) {
+
             return res.send(error(404, "Post Not Found"));
+
         }
 
         if (post.owner.toString() !== currentUserId) {
+
             return res.send(error(403, 'only Owner can update post'));
+
         }
 
         if (caption) {
+
             post.caption = caption;
 
             await post.save();
-            return res.send(success(200, post))
+            return res.send(success(200, post));
+
         }
 
     } catch (e) {
@@ -122,11 +134,15 @@ const deletePostController = async (req, res) => {
         const currentUser = await User.findById(currentUserId);
 
         if (!post) {
+
             return res.send(error(404, "Post Not Found"));
+
         }
 
         if (post.owner.toString() !== currentUserId) {
+
             return res.send(error(403, 'only Owner can delete post'));
+
         }
 
         const index = currentUser.posts.indexOf(postId);

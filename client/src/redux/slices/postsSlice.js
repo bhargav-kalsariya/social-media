@@ -27,7 +27,7 @@ const postsSlice = createSlice({
 
     name: 'postsSlice',
     initialState: {
-        userProfile: null
+        userProfile: {}
     },
     extraReducers: (builder) => {
         builder.addCase(getUserProfile.fulfilled, (state, action) => {

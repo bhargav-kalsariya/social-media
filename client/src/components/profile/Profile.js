@@ -11,6 +11,7 @@ function Profile() {
 
     const params = useParams();
     const myProfile = useSelector(state => state.appConfigReducer.myProfile);
+
     const userProfile = useSelector(state => state.postsReducer.userProfile);
     const disPatch = useDispatch();
     const [isMyProfile, setisMyProfile] = useState('');
@@ -30,10 +31,7 @@ function Profile() {
             <div className="container">
                 <div className="left-side">
                     <CreatePost />
-                    <Post />
-                    <Post />
-                    <Post />
-                    <Post />
+                    {userProfile?.posts?.map(post => <Post key={post._id} post={post} />)}
                 </div>
                 <div className="right-side">
                     <div className="profile-card">
@@ -43,8 +41,8 @@ function Profile() {
                             <h4>{`${userProfile?.followers.length} followers`}</h4>
                             <h4>{`${userProfile?.followings.length} followings`}</h4>
                         </div>
-                        {!myProfile && <button className="follow btn-primary">Follow</button>}
-                        {myProfile && <button className='update-profile btn-secondary' onClick={() => { navigate('/updateProfile') }}>Update Profile</button>}
+                        {!isMyProfile && <button className="follow btn-primary">Follow</button>}
+                        {isMyProfile && <button className='update-profile btn-secondary' onClick={() => { navigate('/updateProfile') }}>Update Profile</button>}
                     </div>
                 </div>
             </div>
