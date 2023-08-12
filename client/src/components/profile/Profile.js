@@ -11,10 +11,11 @@ function Profile() {
 
     const params = useParams();
     const myProfile = useSelector(state => state.appConfigReducer.myProfile);
-
+    const feedData = useSelector(state => state.feedDataReducer.feedData);
     const userProfile = useSelector(state => state.postsReducer.userProfile);
     const disPatch = useDispatch();
     const [isMyProfile, setisMyProfile] = useState('');
+    const [isFollowing, setIsFollowing] = useState('');
 
     useEffect(() => {
 
@@ -23,25 +24,33 @@ function Profile() {
         }))
 
         setisMyProfile(myProfile?._id === params.userId);
+        setIsFollowing(feedData?.followings?.find((item) => item._id === params.userId));
 
-    }, [myProfile]);
+    }, [myProfile, params.userId]);
+
+    function handleUserFollow() {
+
+    }
 
     return (
         <div className='Profile'>
             <div className="container">
                 <div className="left-side">
-                    <CreatePost />
+                    {isMyProfile && <CreatePost />}
                     {userProfile?.posts?.map(post => <Post key={post._id} post={post} />)}
                 </div>
                 <div className="right-side">
                     <div className="profile-card">
-                        <img className="user-img" src={userProfile?.avatar?.url} alt="" />
+                        <img className="user-img" src={userProfile?.avatar?.url} alt='' />
                         <div className="user-name">{`${userProfile?.name}`}</div>
                         <div className="follower-info">
-                            <h4>{`${userProfile?.followers.length} followers`}</h4>
-                            <h4>{`${userProfile?.followings.length} followings`}</h4>
+                            <h4>{`${userProfile?.followers?.length} followers`}</h4>
+                            <h4>{`${userProfile?.followings?.length} followings`}</h4>
                         </div>
-                        {!isMyProfile && <button className="follow btn-primary">Follow</button>}
+                        {!isMyProfile &&
+                            <h5 onClick={handleUserFollow} className={isFollowing ? 'hover-link following-bg follow' : 'hover-link follow follow-link'}>
+                                {isFollowing ? "Following" : "Follow"}
+                            </h5>}
                         {isMyProfile && <button className='update-profile btn-secondary' onClick={() => { navigate('/updateProfile') }}>Update Profile</button>}
                     </div>
                 </div>

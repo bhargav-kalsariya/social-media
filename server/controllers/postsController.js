@@ -1,5 +1,6 @@
 const Post = require("../models/Post");
 const User = require("../models/User");
+const mapPostOutput = require("../utils/Utils");
 const { success, error } = require("../utils/responseWrapper");
 const cloudinary = require('cloudinary').v2;
 
@@ -55,7 +56,7 @@ const likeAndUnlikeController = async (req, res) => {
         const { postId } = req.body;
         const currentUserId = req._id;
 
-        const post = await Post.findById(postId);
+        const post = await Post.findById(postId).populate('owner');
 
         if (!post) {
 
@@ -75,7 +76,7 @@ const likeAndUnlikeController = async (req, res) => {
         }
 
         await post.save();
-        return res.send(success(200, { post }));
+        return res.send(success(200, { post: mapPostOutput(post, req._id) }));
 
     } catch (e) {
 

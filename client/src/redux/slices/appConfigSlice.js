@@ -50,17 +50,24 @@ const appConfigSlice = createSlice({
         myProfile: null
     },
     reducers: {
+
         setLoading: (state, action) => {
+
             state.isLoading = action.payload;
+
         }
     },
     extraReducers: (builder) => {
+
         builder.addCase(getMyInfo.fulfilled, (state, action) => {
+
             state.myProfile = action.payload.user;
+
+        }).addCase(updateMyProfile.fulfilled, (state, action) => {
+
+            state.myProfile = action.payload.user;
+
         })
-            .addCase(updateMyProfile.fulfilled, (state, action) => {
-                state.myProfile = action.payload.user;
-            })
     }
 
 });

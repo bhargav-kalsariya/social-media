@@ -3,6 +3,10 @@
     align-items: center;
     justify-content: space-between;
     height: 60px;
+    border-radius: 5px;
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    margin: 10px 0;
 
     .user-info {
         display: flex;
@@ -11,6 +15,22 @@
     }
 
     .follow-link {
-        color: var(--accent-color);
+        color: white;
+        background-color: var(--accent-color);
+        padding: 4px 16px;
+        border-radius: 5px;
+        margin-top: 12px;
+        display: inline-block;
+        cursor: pointer;
+    }
+
+    .following-bg {
+        color: black;
+        border: 1px solid var(--border-color);
+        padding: 4px 8px;
+        border-radius: 5px;
+        margin-top: 12px;
+        display: inline-block;
+        cursor: pointer;
     }
 }

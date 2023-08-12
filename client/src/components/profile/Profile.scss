@@ -36,7 +36,7 @@
             }
 
             .user-name,
-            .folloewe-info {
+            .follower-info {
                 margin-top: 10px;
             }
 
@@ -50,8 +50,22 @@
 
             .follow,
             .update-profile {
-                margin-top: 12px;
+                margin-top: 20px;
                 display: inline-block;
+            }
+
+            .follow-link {
+                color: white;
+                background-color: var(--accent-color);
+                padding: 8px 32px;
+                border-radius: 5px;
+            }
+
+            .following-bg {
+                color: black;
+                border: 1px solid var(--border-color);
+                padding: 8px 32px;
+                border-radius: 5px;
             }
         }
     }
