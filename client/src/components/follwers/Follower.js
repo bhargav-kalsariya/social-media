@@ -16,7 +16,7 @@ function Follower({ user }) {
 
         setIsFollowing(feedData.followings.find(item => item._id === user._id));
 
-    }, [feedData]);
+    }, [feedData, user._id]);
 
     function handleUserFollow() {
 

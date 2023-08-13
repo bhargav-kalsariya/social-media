@@ -1,3 +1,5 @@
+const timeAgo = require('time-ago')
+
 const mapPostOutput = (post, userId) => {
 
     return {
@@ -11,7 +13,8 @@ const mapPostOutput = (post, userId) => {
             avatar: post.owner.avatar
         },
         likeCount: post.likes.length,
-        isLiked: post.likes.includes(userId)
+        isLiked: post.likes.includes(userId),
+        timeAgo: timeAgo.ago(post.createdAt)
 
     }
 };

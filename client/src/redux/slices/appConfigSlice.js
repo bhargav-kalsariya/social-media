@@ -53,7 +53,7 @@ const appConfigSlice = createSlice({
 
         setLoading: (state, action) => {
 
-            state.isLoading = action.payload;
+            state.isLoading = action?.payload;
 
         }
     },

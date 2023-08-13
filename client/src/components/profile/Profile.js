@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import CreatePost from '../createPost/CreatePost'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserProfile } from '../../redux/slices/postsSlice'
+import { followAndUnfollowUser } from '../../redux/slices/FeedSlice'
 
 function Profile() {
     const navigate = useNavigate();
@@ -26,9 +27,13 @@ function Profile() {
         setisMyProfile(myProfile?._id === params.userId);
         setIsFollowing(feedData?.followings?.find((item) => item._id === params.userId));
 
-    }, [myProfile, params.userId]);
+    }, [disPatch, myProfile, params.userId, feedData]);
 
     function handleUserFollow() {
+
+        disPatch(followAndUnfollowUser({
+            userIdToFollow: params.userId
+        }))
 
     }
 
