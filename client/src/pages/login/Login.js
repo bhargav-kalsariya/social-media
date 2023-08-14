@@ -14,12 +14,12 @@ function Login() {
         e.preventDefault();
 
         try {
-            const result = await axiosClient.post('/auth/login', {
+            const response = await axiosClient.post('/auth/login', {
                 email,
                 password
             });
-            console.log(result);
-            setItem(KEY_ACCESS_TOKEN, result.accessToken);
+            console.log(response);
+            setItem(KEY_ACCESS_TOKEN, response.result.accessToken);
             naviget('/');
         } catch (error) {
             console.error(error);

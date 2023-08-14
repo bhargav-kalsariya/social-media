@@ -32,7 +32,7 @@ function Navbar() {
                 <h2 className="banner hover-link" onClick={() => navigate('/')}>Social media</h2>
                 <div className="right-side">
                     <div className=" hover-link" onClick={() => navigate(`/profile/${myProfile?._id}`)}>
-                        <Avatar className="profile" src={myProfile?.avatar.url} />
+                        <Avatar className="profile" src={myProfile?.avatar?.url} />
                     </div>
                     <div className="logout hover-link" onClick={handleLogoutClicked}>
                         <AiOutlineLogout />

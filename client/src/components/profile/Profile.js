@@ -6,6 +6,7 @@ import CreatePost from '../createPost/CreatePost'
 import { useDispatch, useSelector } from 'react-redux'
 import { getUserProfile } from '../../redux/slices/postsSlice'
 import { followAndUnfollowUser } from '../../redux/slices/FeedSlice'
+import dummyImg from '../../assets/user.png'
 
 function Profile() {
     const navigate = useNavigate();
@@ -46,8 +47,9 @@ function Profile() {
                 </div>
                 <div className="right-side">
                     <div className="profile-card">
-                        <img className="user-img" src={userProfile?.avatar?.url} alt='' />
+                        <img className="user-img" src={userProfile?.avatar?.url || dummyImg} alt='' />
                         <div className="user-name">{`${userProfile?.name}`}</div>
+                        <p className='user-bio'>{userProfile?.bio}</p>
                         <div className="follower-info">
                             <h4>{`${userProfile?.followers?.length} followers`}</h4>
                             <h4>{`${userProfile?.followings?.length} followings`}</h4>
