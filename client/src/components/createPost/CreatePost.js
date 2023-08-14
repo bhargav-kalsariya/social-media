@@ -4,7 +4,6 @@ import Avatar from '../avatar/Avatar';
 import { BsCardImage } from 'react-icons/bs'
 import { axiosClient } from '../../utils/axiosClient'
 import { useDispatch, useSelector } from 'react-redux'
-import { setLoading } from '../../redux/slices/appConfigSlice';
 import { getUserProfile } from '../../redux/slices/postsSlice';
 
 function CreatePost() {
@@ -29,7 +28,6 @@ function CreatePost() {
 
         try {
 
-            disPatch(setLoading(true));
             const response = await axiosClient.post('/posts/', {
                 caption,
                 postImg
@@ -41,11 +39,10 @@ function CreatePost() {
 
         } catch (error) {
 
-            Promise.reject(error);
+            return Promise.reject(error);
 
         } finally {
 
-            disPatch(setLoading(false));
             setCaption('');
             setPostImg('');
 
@@ -56,7 +53,7 @@ function CreatePost() {
     return (
         <div className='createPost'>
             <div className="left-part">
-                <Avatar />
+                <Avatar src={myProfile?.avatar?.url} />
             </div>
             <div className="right-part">
                 <input value={caption} type="text" className='captionInput' placeholder=' what is your thought ? ' onChange={(e) => setCaption(e.target.value)} />

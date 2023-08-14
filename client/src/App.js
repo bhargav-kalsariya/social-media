@@ -10,25 +10,50 @@ import { useSelector } from "react-redux";
 import LoadingBar from 'react-top-loading-bar'
 import { useEffect, useRef } from "react";
 import OnlyIfNotLogin from "./components/OnlyIfNotLogin";
+import toast, { Toaster } from 'react-hot-toast'
+
+export const TOAST_SUCCESS = 'toast-success'
+export const TOAST_FAILURE = 'toast-failure'
 
 function App() {
 
   const isLoading = useSelector(state => state.appConfigReducer.isLoading);
+  const toastData = useSelector(state => state.appConfigReducer.toastData);
   const LoadingRef = useRef(null);
 
   useEffect(() => {
+
     if (isLoading) {
       LoadingRef.current?.continuousStart();
     } else {
       LoadingRef.current?.complete();
     }
+
   })
+
+  useEffect(() => {
+
+    switch (toastData.type) {
+      case TOAST_SUCCESS:
+        toast.success(toastData.message);
+        break;
+
+      case TOAST_FAILURE:
+        toast.error(toastData.message);
+        break;
+
+      default:
+        break;
+
+    }
+
+  }, [toastData])
 
   return (
     <div className="App">
 
       <LoadingBar color='blue' ref={LoadingRef} />
-
+      <div><Toaster /></div>
       <Routes>
 
         <Route element={<RequireUser />}>

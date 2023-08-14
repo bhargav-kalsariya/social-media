@@ -3,7 +3,6 @@ import Avatar from '../avatar/Avatar'
 import './Post.scss';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai'
 import { useDispatch } from 'react-redux';
-import { setLoading } from '../../redux/slices/appConfigSlice';
 import { likeAndUnlike } from '../../redux/slices/postsSlice';
 import { useNavigate } from 'react-router-dom';
 
@@ -26,12 +25,7 @@ function Post({ post }) {
 
             Promise.reject(error);
 
-        } finally {
-
-            disPatch(setLoading(false));
-
         }
-
     }
 
     return (

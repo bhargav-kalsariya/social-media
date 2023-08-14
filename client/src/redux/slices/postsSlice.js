@@ -1,12 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { axiosClient } from '../../utils/axiosClient';
-import { setLoading } from './appConfigSlice';
 
-export const getUserProfile = createAsyncThunk('user/getUserProfile', async (body, thunkAPI) => {
+export const getUserProfile = createAsyncThunk('user/getUserProfile', async (body) => {
 
     try {
 
-        thunkAPI.dispatch(setLoading(true));
         const response = await axiosClient.post('/user/getUserProfile', body);
         console.log('userProfile', response.result);
         return response.result;
@@ -15,19 +13,14 @@ export const getUserProfile = createAsyncThunk('user/getUserProfile', async (bod
 
         return Promise.reject(error);
 
-    } finally {
-
-        thunkAPI.dispatch(setLoading(false));
-
     }
 
 });
 
-export const likeAndUnlike = createAsyncThunk('post/likeAndUnlike', async (body, thunkAPI) => {
+export const likeAndUnlike = createAsyncThunk('post/likeAndUnlike', async (body) => {
 
     try {
 
-        thunkAPI.dispatch(setLoading(true));
         const response = await axiosClient.post('/posts/like', body);
         console.log('like post', response.result.post);
         return response.result.post;
@@ -35,10 +28,6 @@ export const likeAndUnlike = createAsyncThunk('post/likeAndUnlike', async (body,
     } catch (error) {
 
         return Promise.reject(error);
-
-    } finally {
-
-        thunkAPI.dispatch(setLoading(false));
 
     }
 

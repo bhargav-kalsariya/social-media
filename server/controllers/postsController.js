@@ -15,7 +15,7 @@ const createPostController = async (req, res) => {
 
         if (!caption || !postImg) {
 
-            return res.send(success(400, 'Caption and postImg are required'));
+            return res.send(error(400, 'Caption and postImg are required'));
 
         }
 
@@ -60,7 +60,7 @@ const likeAndUnlikeController = async (req, res) => {
 
         if (!post) {
 
-            return res.send(success(404, 'Post Not Found'));
+            return res.send(error(404, 'Post Not Found'));
 
         }
 
