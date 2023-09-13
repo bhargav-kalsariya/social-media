@@ -34,6 +34,10 @@ app.use('/user', userRouter);
 app.use('/posts', postsRouter);
 app.use('/auth', authRouter);
 
+app.get('/',(req,res)=>{
+    res.send('Welcome to the server');
+})
+
 let PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
