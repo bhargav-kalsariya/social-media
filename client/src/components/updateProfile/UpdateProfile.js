@@ -3,6 +3,9 @@ import './UpdateProfile.scss';
 import { useDispatch, useSelector } from 'react-redux';
 import { updateMyProfile } from '../../redux/slices/appConfigSlice';
 import dummyImg from '../../assets/user.png'
+import { axiosClient } from '../../utils/axiosClient';
+import { useNavigate } from 'react-router-dom';
+import { KEY_ACCESS_TOKEN, removeItem } from '../../utils/localStorageManager';
 
 function UpdateProfile() {
 
@@ -12,6 +15,7 @@ function UpdateProfile() {
     const [bio, setBio] = useState('');
     const [userImg, setUserImg] = useState('');
     const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     useEffect(() => {
 
@@ -30,6 +34,21 @@ function UpdateProfile() {
             if (fileReader.readyState === fileReader.DONE) {
                 setUserImg(fileReader.result)
             }
+        }
+
+    }
+    async function handleProfileDelete() {
+
+        try {
+
+            await axiosClient.delete('/');
+            removeItem(KEY_ACCESS_TOKEN);
+            navigate('/login');
+
+        } catch (e) {
+
+            console.log(e);
+
         }
 
     }
@@ -60,7 +79,7 @@ function UpdateProfile() {
                         <input value={bio} type="text" placeholder='Your Bio' onChange={(e) => setBio(e.target.value)} />
                         <input type="submit" className='btn-primary' onSubmit={handleSubmit} />
                     </form>
-                    <input type="submit" className='btn-primary delete-account' value='Delete Account' />
+                    <input type="submit" className='btn-primary delete-account' value='Delete Account' onClick={handleProfileDelete} />
                 </div>
             </div>
         </div>
